@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login</title>
+</head>
+<body>
+<h2>Login</h2>
+<p>Use: <span style="color:orange;">"alice"</span> <span style="color:red;">as username</span></p>
+<form id="loginForm">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" required>
+    <button type="submit">Login</button>
+</form>
+<script>
+document.getElementById('loginForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const username = document.getElementById('username').value;
+
+    fetch('/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `username=${encodeURIComponent(username)}`
+    })
+    .then(response => response.text())
+    .then(data => {
+        alert(data);
+        if (!data.includes('failed')) {
+            // Redirect to admin page if login successful
+            window.location.href = '/admin.html';
+        }
+    });
+});
+</script>
+</body>
+</html>
